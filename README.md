@@ -1,8 +1,7 @@
 # 👁️ OmniView
 
-[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
-[![GitHub stars](https://img.shields.io/github/stars/seif4d/OmniView.svg?style=social&label=Star)](https://github.com/seif4d/OmniView/stargazers)  
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Click%20Here-green.svg)](https://seif4d.github.io/OmniView/)  
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/seif4d/OmniView/blob/main/LICENSE)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg)](https://seif4d.github.io/OmniView/)
 
 > **عربي:** عارض محادثات ويب شامل وأنيق، يتيح لك استكشاف سجلاتك الرقمية من مختلف نماذج الذكاء الاصطناعي في واجهة موحدة وجميلة.  
 > **English:** A universal, elegant web viewer for all your AI chat logs—ChatGPT, DeepSeek, AI Studio—packed into a single HTML file.
