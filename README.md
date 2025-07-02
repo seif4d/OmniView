@@ -15,7 +15,7 @@
 
 ---
 
-## 🤔 لماذا OmniView؟ | Why OmniView?
+## 🤔 لماذا OmniView؟ | Why OmniView
 
 في عالم مليء بنماذج الذكاء الاصطناعي، تتناثر محادثاتنا عبر منصات متعددة. **OmniView** هو الحل الذي يجمع شتات هذا العالم الرقمي.
 
@@ -217,3 +217,224 @@
 ---
 
 > صنع بحب وشغف كوني 🌌 بواسطة **[Seif 4D](https://github.com/seif4d)**
+
+---
+
+# 👁️ OmniView
+
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/seif4d/OmniView/blob/main/LICENSE)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg)](https://seif4d.github.io/OmniView/)
+[![Stars](https://img.shields.io/github/stars/seif4d/OmniView?style=social)](https://github.com/seif4d/OmniView/stargazers)
+
+> A universal, elegant web viewer for all your AI chat logs—ChatGPT, DeepSeek, AI Studio—packed into a single, beautiful HTML file.
+
+---
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/seif4d/OmniView/main/OmniViewe.png" alt="OmniView Screenshot" width="85%">
+</p>
+
+---
+
+## 🤔 Why OmniView?
+
+In a world filled with AI models, our conversations are scattered across multiple platforms. **OmniView** is the solution that brings your digital world together.
+
+- **🔒 Privacy First:** Everything is processed locally in your browser. No files are uploaded, and your data remains your own.
+- **⚡ Speed & Efficiency:** No heavy libraries or frameworks. Just pure, vanilla JavaScript for lightning-fast performance.
+- **💎 Simplicity & Elegance:** A meticulously crafted UI that makes browsing your logs a visually pleasing experience.
+
+## 📌 Table of Contents
+1. [🎯 Key Features](#-key-features)
+2. [🚀 Live Demo](#-live-demo)
+3. [⚙️ Get Started](#️-get-started-in-30-seconds)
+4. [📥 How to Get Your Logs](#-how-to-get-your-logs)
+5. [🛠️ Tech Stack](#️-tech-stack)
+6. [🤝 Contributing](#-contributing)
+7. [⭐ Show Your Support](#️-show-your-support)
+8. [📜 License](#-license)
+
+---
+
+## 🎯 Key Features
+
+| Feature | Description |
+| :--- | :--- |
+| 🚀 **Omni-Source Support** | Unify your digital past. OmniView seamlessly reads and interprets conversations from **ChatGPT, DeepSeek, and AI Studio**. |
+| 🌗 **Light & Dark Modes** | A UI that adapts to your environment. Choose between a refreshing light mode or a comfortable, eye-friendly dark mode. |
+| ✨ **Design & UX** | An immersive experience with **Glassmorphism** effects, animated backgrounds, and smooth message-reveal animations. |
+| 🔍 **Instant Search** | Find any conversation in a flash with the smart search bar. |
+| 📑 **Advanced Content Rendering** | Full Markdown support, complete with copy-to-clipboard code blocks `⚔️`, elegant tables, and styled blockquotes. |
+| 📦 **Single File Magic** | All this functionality is bundled into a single HTML file. Portable, easy to use, and easy to share. |
+
+## 🚀 Live Demo
+
+Try OmniView directly in your browser. No installation required!
+
+👉 **[https://seif4d.github.io/OmniView/](https://seif4d.github.io/OmniView/)** 👈
+
+---
+
+## ⚙️ Get Started in 30 Seconds
+
+1.  **Go to the [Live Demo page](https://seif4d.github.io/OmniView/)**.
+2.  Click the **"Download OmniView Now ✨"** button to get the `OmniView-App.html` file.
+3.  **Open the file in your browser** (Chrome, Firefox, Edge, etc.).
+4.  Drag & drop your files or use the import buttons to start exploring!
+
+---
+
+## 📥 How to Get Your Logs
+
+Need help downloading your chat logs? Here’s a quick guide for each platform.
+
+<details>
+<summary><strong>🤖 For ChatGPT Users (Two Methods)</strong></summary>
+<br>
+
+Depending on the export format you receive from ChatGPT, follow one of these two methods:
+
+### Method 1: If you have a `conversations.json` file (Easiest)
+1.  Log in to your account at [ChatGPT](https://chat.openai.com).
+2.  At the bottom left, click your name, then select **Settings**.
+3.  Go to the **Data Controls** section and click the **Export data** button.
+4.  You will receive an email with a link to download a `.zip` file.
+5.  After unzipping, you'll find a file named `conversations.json`. **This is the file you need for OmniView!**
+
+<br>
+
+### Method 2: If you have a `chat.html` file (Converter Method)
+
+If your export contains a `chat.html` file instead of `conversations.json`, follow these magical steps to convert it:
+
+**🧑‍🚀 1. Request Your Data:** Follow the same export steps mentioned in Method 1.
+
+**📦 2. Find the Right File:** After unzipping the downloaded `.zip` file, locate the `chat.html` file.
+
+**🪄 3. The Magic of Conversion (Run the Code):**
+   - Open the `chat.html` file in a modern web browser (like Google Chrome).
+   - Open the Developer Tools by pressing `F12`.
+   - Navigate to the **Console** tab.
+   - **Copy the entire code block below**, paste it into the console, and press `Enter`.
+
+```javascript
+(function() {
+    const conversationNodes = document.querySelectorAll('body > div');
+    const conversations = [];
+
+    if (conversationNodes.length === 0) {
+        alert("No conversations found. The structure of chat.html may have changed.");
+        return;
+    }
+
+    conversationNodes.forEach(node => {
+        const titleNode = node.querySelector('h1, h2, h3, h4, h5, h6');
+        const messageNodes = node.querySelectorAll('div > div:nth-child(2)');
+
+        if (messageNodes.length > 0) {
+            const conversation = {
+                title: titleNode ? titleNode.textContent.trim() : `Conversation on ${new Date().toLocaleDateString()}`,
+                messages: []
+            };
+
+            messageNodes.forEach(msgNode => {
+                const authorNode = msgNode.querySelector('div:first-child');
+                const contentNode = msgNode.querySelector('div:nth-child(2)');
+
+                if (authorNode && contentNode) {
+                    let author = authorNode.textContent.trim();
+                    if (author.toLowerCase() === 'assistant') {
+                        author = 'ChatGPT';
+                    }
+
+                    conversation.messages.push({
+                        author: author,
+                        content: contentNode.textContent.trim()
+                    });
+                }
+            });
+
+            if (conversation.messages.length > 0) {
+                conversations.push(conversation);
+            }
+        }
+    });
+
+    if (conversations.length === 0) {
+        alert("Extraction failed. Could not parse messages from the file.");
+        return;
+    }
+
+    const jsonString = JSON.stringify(conversations, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'conversations.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    alert(`Success! Exported ${conversations.length} conversations to 'conversations.json'. Check your downloads folder.`);
+})();
+```
+
+**🌌 4. Explore the Universe:** The script will automatically generate and download a `conversations.json` file. Use this new file in OmniView!
+
+</details>
+
+<details>
+<summary><strong>✨ For Google AI Studio Users</strong></summary>
+<br>
+
+1.  Go to your [Google Drive](https://drive.google.com).
+2.  Find a folder named **AI Studio**. This folder contains all your chats as individual `.json` files.
+3.  Right-click the **AI Studio** folder and select **Download**.
+4.  Your folder will be downloaded as a `.zip` file. Unzip it.
+5.  In OmniView, use the **"📂 Folder (AI Studio)"** button and select this unzipped folder.
+
+</details>
+
+<details>
+<summary><strong>🧠 For DeepSeek Users</strong></summary>
+<br>
+
+1.  Log in to your account at [DeepSeek](https://chat.deepseek.com/).
+2.  Click your profile icon.
+3.  Look for **Settings**, then **Export Data**.
+4.  Follow the instructions to export your data. You'll typically receive a `.zip` file containing a JSON file of your conversations.
+
+</details>
+
+---
+
+## 🛠️ Tech Stack
+
+- **Vanilla JS (ES6+)**: For pure, fast performance with zero dependencies.
+- **HTML5**: For a strong, semantic structure.
+- **CSS3**: For modern, responsive designs with CSS Variables, Flexbox, and Grid.
+- **Marked.js**: For fast Markdown-to-HTML conversion.
+- **DOMPurify**: To ensure content security and protect you from malicious scripts.
+
+## 🤝 Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1.  Fork the Project.
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the Branch (`git push origin feature/AmazingFeature`).
+5.  Open a Pull Request.
+
+## ⭐ Show Your Support
+
+If you find this project useful and enjoyable, please consider giving it a **star ⭐** on GitHub! It helps the project grow and reach more people.
+
+## 📜 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+> Crafted with cosmic passion 🌌 by **[Seif 4D](https://github.com/seif4d)**
