@@ -4,17 +4,18 @@
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg)](https://seif4d.github.io/OmniView/)
 [![Stars](https://img.shields.io/github/stars/seif4d/OmniView?style=social)](https://github.com/seif4d/OmniView/stargazers)
 
-> **عربي:** عارض محادثات ويب شامل وأنيق، يتيح لك استكشاف سجلاتك الرقمية من مختلف نماذج الذكاء الاصطناعي في واجهة موحدة وجميلة.  
-> **English:** A universal, elegant web viewer for all your AI chat logs—ChatGPT, DeepSeek, AI Studio—packed into a single, beautiful HTML file.
+> عارض محادثات ويب شامل وأنيق، يتيح لك استكشاف سجلاتك الرقمية من مختلف نماذج الذكاء الاصطناعي في واجهة موحدة وجميلة.
+
+> A universal, elegant web viewer for all your AI chat logs—ChatGPT, DeepSeek, AI Studio—packed into a single, beautiful HTML file.
 
 ---
 
 
-*(نصيحة: قم بتسجيل GIF قصير للتطبيق وهو يعمل وضعه هنا!)*
+![OmniView](https://raw.githubusercontent.com/seif4d/OmniView/refs/heads/main/OmniView.png)
 
 ---
 
-## 🤔 لماذا OmniView؟ | Why OmniView?
+## 🤔 لماذا OmniView؟ | Why OmniView
 
 في عالم مليء بنماذج الذكاء الاصطناعي، تتناثر محادثاتنا عبر منصات متعددة. **OmniView** هو الحل الذي يجمع شتات هذا العالم الرقمي.
 
