@@ -4,9 +4,8 @@
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg)](https://seif4d.github.io/OmniView/)
 [![Stars](https://img.shields.io/github/stars/seif4d/OmniView?style=social)](https://github.com/seif4d/OmniView/stargazers)
 
-> عارض محادثات ويب شامل وأنيق، يتيح لك استكشاف سجلاتك الرقمية من مختلف نماذج الذكاء الاصطناعي في واجهة موحدة وجميلة.
-
-> A universal, elegant web viewer for all your AI chat logs—ChatGPT, DeepSeek, AI Studio—packed into a single, beautiful HTML file.
+>  عارض محادثات ويب شامل وأنيق، يتيح لك استكشاف سجلاتك الرقمية من مختلف نماذج الذكاء الاصطناعي في واجهة موحدة وجميلة.  
+>  A universal, elegant web viewer for all your AI chat logs—ChatGPT, DeepSeek, AI Studio—packed into a single, beautiful HTML file.
 
 ---
 
@@ -15,7 +14,7 @@
 
 ---
 
-## 🤔 لماذا OmniView؟ | Why OmniView
+## 🤔 لماذا OmniView؟ | Why OmniView?
 
 في عالم مليء بنماذج الذكاء الاصطناعي، تتناثر محادثاتنا عبر منصات متعددة. **OmniView** هو الحل الذي يجمع شتات هذا العالم الرقمي.
 
@@ -66,15 +65,98 @@
 هل تحتاج إلى مساعدة في تنزيل ملفات المحادثات؟ إليك دليل سريع لكل منصة.
 
 <details>
-<summary><strong>🤖 لمستخدمي ChatGPT</strong></summary>
+<summary><strong>🤖 لمستخدمي ChatGPT (طريقتان)</strong></summary>
 <br>
 
+اعتمادًا على نوع التصدير الذي حصلت عليه من ChatGPT، اتبع إحدى الطريقتين:
+
+### الطريقة الأولى: إذا كان لديك ملف `conversations.json` (الأسهل)
 1.  سجّل دخولك إلى حسابك في [ChatGPT](https://chat.openai.com).
 2.  في أسفل يسار الشاشة، اضغط على اسمك ثم اختر **Settings**.
-3.  اذهب إلى قسم **Data Controls**.
-4.  اضغط على زر **Export data**.
-5.  ستصلك رسالة على بريدك الإلكتروني تحتوي على رابط لتحميل ملف `.zip`.
-6.  بعد فك الضغط، ستجد ملفاً باسم `conversations.json`. **هذا هو الملف الذي تحتاجه!**
+3.  اذهب إلى قسم **Data Controls** واضغط على زر **Export data**.
+4.  ستصلك رسالة على بريدك الإلكتروني تحتوي على رابط لتحميل ملف `.zip`.
+5.  بعد فك الضغط، ستجد ملفاً باسم `conversations.json`. **هذا هو الملف الذي تحتاجه مباشرة في OmniView!**
+
+<br>
+
+### الطريقة الثانية: إذا كان لديك ملف `chat.html` (طريقة التحويل)
+
+إذا كان ملف التصدير الخاص بك يحتوي على `chat.html` بدلاً من `conversations.json`، اتبع هذه الخطوات السحرية لتحويله:
+
+**🧑‍🚀 1. طلب بياناتك:** اتبع نفس خطوات طلب البيانات المذكورة في الطريقة الأولى.
+
+**📦 2. إيجاد الملف الصحيح:** بعد فك ضغط ملف `.zip` الذي حملته، ابحث عن ملف اسمه `chat.html`.
+
+**🪄 3. سحر التحويل (تشغيل الكود):**
+   - افتح ملف `chat.html` في متصفح ويب حديث (مثل Google Chrome).
+   - افتح "أدوات المطور" (Developer Tools) بالضغط على `F12`.
+   - انتقل إلى تبويب **Console**.
+   - **انسخ الكود التالي بالكامل**، ثم الصقه في الـ Console واضغط `Enter`.
+
+```javascript
+(function() {
+    const conversationNodes = document.querySelectorAll('body > div');
+    const conversations = [];
+
+    if (conversationNodes.length === 0) {
+        alert("لم يتم العثور على أي محادثات. قد يكون هيكل ملف chat.html قد تغير.");
+        return;
+    }
+
+    conversationNodes.forEach(node => {
+        const titleNode = node.querySelector('h1, h2, h3, h4, h5, h6');
+        const messageNodes = node.querySelectorAll('div > div:nth-child(2)');
+
+        if (messageNodes.length > 0) {
+            const conversation = {
+                title: titleNode ? titleNode.textContent.trim() : `محادثة بتاريخ ${new Date().toLocaleDateString()}`,
+                messages: []
+            };
+
+            messageNodes.forEach(msgNode => {
+                const authorNode = msgNode.querySelector('div:first-child');
+                const contentNode = msgNode.querySelector('div:nth-child(2)');
+
+                if (authorNode && contentNode) {
+                    let author = authorNode.textContent.trim();
+                    if (author.toLowerCase() === 'assistant') {
+                        author = 'ChatGPT';
+                    }
+
+                    conversation.messages.push({
+                        author: author,
+                        content: contentNode.textContent.trim()
+                    });
+                }
+            });
+
+            if (conversation.messages.length > 0) {
+                conversations.push(conversation);
+            }
+        }
+    });
+
+    if (conversations.length === 0) {
+        alert("فشل الاستخراج. لم نتمكن من تحليل الرسائل من الملف.");
+        return;
+    }
+
+    const jsonString = JSON.stringify(conversations, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'conversations.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    alert(`نجاح! تم تصدير ${conversations.length} محادثة إلى ملف 'conversations.json'. تحقق من مجلد التنزيلات.`);
+})();
+```
+
+**🌌 4. استكشاف الكون:** سيقوم الكود تلقائيًا بإنشاء وتحميل ملف `conversations.json` إلى جهازك. استخدم هذا الملف الجديد في OmniView!
 
 </details>
 
@@ -95,12 +177,9 @@
 <br>
 
 1.  سجّل دخولك إلى حسابك في [DeepSeek](https://chat.deepseek.com/).
-2.  اضغط على أيقونة ملفك الشخصي (عادةً في الزاوية العلوية أو السفلية).
-3.  ابحث عن خيار **Settings** (الإعدادات) أو **Account** (الحساب).
-4.  ابحث عن زر **Export Chat History** أو **Export Data**.
-5.  اتبع التعليمات لتصدير بياناتك. غالباً ما ستحصل على ملف `.zip` يحتوي على ملف JSON لمحادثاتك.
-
-> **ملاحظة:** قد تختلف الخطوات قليلاً. الهدف هو العثور على خيار تصدير البيانات في إعدادات حسابك.
+2.  اضغط على أيقونة ملفك الشخصي.
+3.  ابحث عن خيار **Settings** (الإعدادات) ثم **Export Data**.
+4.  اتبع التعليمات لتصدير بياناتك. غالباً ما ستحصل على ملف `.zip` يحتوي على ملف JSON لمحادثاتك.
 
 </details>
 
