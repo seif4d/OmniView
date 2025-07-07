@@ -68,7 +68,7 @@
 هل تحتاج إلى مساعدة في تنزيل ملفات المحادثات؟ إليك دليل سريع لكل منصة.
 
 <details>
-<summary><strong>🤖 لمستخدمي ChatGPT (طريقتان)</strong></summary>
+<summary><strong>🤖 لمستخدمي ChatGPT (3 طرق)</strong></summary>
 <br>
 
 اعتمادًا على نوع التصدير الذي حصلت عليه من ChatGPT، اتبع إحدى الطريقتين:
@@ -183,6 +183,119 @@ function extractConversationsToJson() {
 // تشغيل الدالة مباشرة بعد لصق الكود
 extractConversationsToJson();
 ```
+### الطريقة الثالثة : تحويل ملف `chat.json` لـ  `json` مرتب و منسق:
+
+**🧑‍🚀 1. طلب بياناتك:** اتبع نفس خطوات طلب البيانات المذكورة في الطريقة الأولى.
+
+**📦 2. إيجاد الملف الصحيح:** بعد فك ضغط ملف `.zip` الذي حملته، ابحث عن ملف اسمه `chat.json`.
+
+**🪄 3. سحر التحويل (تشغيل الكود):**
+### 🚀 خطوات الاستخدام:
+1. تأكد أن لديك Python 3 مثبت على جهازك.
+2. احفظ هذا الكود في ملف مثلًا `convert_chatgpt_json.py`:
+
+```python
+import json
+from datetime import datetime
+
+def convert_chat_format_v2(input_filename="conversations.json", output_filename="conversations_formatted.json"):
+    """
+    يقوم هذا الكود المحسّن بقراءة ملف JSON من تصدير ChatGPT وتحويله
+    إلى تنسيق مبسط ومنظم، مع ضمان تتبع المسار الصحيح والكامل للمحادثة.
+    """
+    print(f"🚀 جاري البدء بالإصدار الجديد... سأقرأ الملف: {input_filename}")
+
+    try:
+        with open(input_filename, 'r', encoding='utf-8') as f:
+            all_conversations_data = json.load(f)
+    except FileNotFoundError:
+        print(f"❌ خطأ: لم أتمكن من العثور على الملف '{input_filename}'. تأكد من أنه في نفس المجلد.")
+        return
+    except json.JSONDecodeError:
+        print(f"❌ خطأ: الملف '{input_filename}' لا يحتوي على بيانات JSON صالحة.")
+        return
+
+    formatted_conversations = []
+    print(f"🔍 وجدت {len(all_conversations_data)} محادثة. جاري المعالجة بالطريقة الذكية...")
+
+    for conversation_data in all_conversations_data:
+        title = conversation_data.get("title", "محادثة بدون عنوان")
+        mapping = conversation_data.get("mapping", {})
+        
+        # 1. البحث عن آخر رسالة في المحادثة (نقطة النهاية)
+        # الطريقة الأكثر دقة هي استخدام "current_node" الذي يحدده الملف
+        leaf_node_id = conversation_data.get("current_node")
+
+        # إذا لم نجد "current_node"، سنبحث عن الرسالة الأحدث كخطة بديلة
+        if not leaf_node_id:
+            latest_time = 0
+            for node_id, node in mapping.items():
+                if not node.get("children"):  # هذه هي "أوراق" الشجرة (نهايات الفروع)
+                    message = node.get("message")
+                    if message and message.get("create_time"):
+                        if message["create_time"] > latest_time:
+                            latest_time = message["create_time"]
+                            leaf_node_id = node_id
+        
+        if not leaf_node_id or not mapping:
+            print(f"⚠️ تم تخطي محادثة '{title}' لعدم وجود رسائل واضحة.")
+            continue
+
+        # 2. تتبع المحادثة للخلف من النهاية إلى البداية
+        messages = []
+        current_id = leaf_node_id
+        while current_id:
+            node = mapping.get(current_id)
+            if not node:
+                break  # نتوقف إذا لم نجد العقدة
+
+            message_data = node.get("message")
+            if message_data and message_data.get("author"):
+                author_role = message_data["author"].get("role")
+                content_parts = message_data.get("content", {}).get("parts")
+                
+                # نتجاهل رسائل "النظام" ونجمع محتوى الرسالة
+                if author_role != "system" and content_parts:
+                    full_content = "".join(part for part in content_parts if isinstance(part, str)).strip()
+                    
+                    if full_content:  # نتأكد أن المحتوى ليس فارغًا
+                        messages.insert(0, {  # نستخدم insert(0, ..) لإضافة الرسالة في البداية (لأننا نرجع للخلف)
+                            "author": author_role,
+                            "content": full_content
+                        })
+            
+            # ننتقل إلى الرسالة "الأب" (الرسالة السابقة)
+            current_id = node.get("parent")
+
+        # 3. إضافة المحادثة المكتملة إلى قائمتنا النهائية
+        if messages:
+            formatted_conversations.append({
+                "title": title,
+                "messages": messages
+            })
+            print(f"✅ تمت معالجة محادثة: '{title}' بنجاح ({len(messages)} رسالة).")
+
+    # 4. حفظ النتيجة النهائية في ملف JSON جديد ومنسق
+    print(f"🎉 اكتملت المعالجة! جاري حفظ {len(formatted_conversations)} محادثة في الملف: {output_filename}")
+    with open(output_filename, 'w', encoding='utf-8') as f:
+        json.dump(formatted_conversations, f, indent=2, ensure_ascii=False)
+
+    print("🎊 كل شيء تم بنجاح! الملف الجديد جاهز للاستخدام.")
+
+
+# --- كيفية الاستخدام (نفس الطريقة السابقة) ---
+if __name__ == "__main__":
+    # اسم ملف الإدخال الذي يشبه التعويذة
+    input_file = "conversations.json"
+    
+    # اسم الملف الذي تريد حفظ النتيجة فيه
+    output_file = "conversations_formatted.json"
+    
+    convert_chat_format_v2(input_file, output_file)
+```
+سيقوم بإنشاء ملف conversations_formatted.json، يمكنك بعدها سحبه مباشرة في OmniView للاستمتاع بمحادثاتك.
+
+---
 
 **🌌 4. استكشاف الكون:** سيقوم الكود تلقائيًا بإنشاء وتحميل ملف `conversations.json` إلى جهازك. استخدم هذا الملف الجديد في OmniView!
 
